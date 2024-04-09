@@ -1,0 +1,19 @@
+server:
+  port: 8088
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    # gateway的配置
+    gateway:
+      # 路由规则
+      routes:
+        - id: order_route # 路由的唯一标识
+          uri: http://localhost:8020 # 路由的目标地址
+          predicates: # 断言
+            - Path=/order-serv/**
+              # http://localhost:8020/order-serv/order/add
+          filters: # 过滤器
+            - StripPrefix=1 # 转发之前去掉第一层路径
+              # http://localhost:8020/order-serv/order/add -> http://localhost:8020/order/add
+        #- id: stock_route
